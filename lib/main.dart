@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:my_test_flutter_ui_2/screens/chat_screen.dart';
-import 'package:my_test_flutter_ui_2/screens/home_screen.dart';
-import 'package:my_test_flutter_ui_2/screens/login_screen.dart';
+import 'package:ola_nofel_test2/screens/chat_screen.dart';
+import 'package:ola_nofel_test2/screens/home_screen.dart';
+import 'package:ola_nofel_test2/screens/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'core/config/gonfig_git_it.dart';
 
 void main() {
+  setup();
   runApp(MyApp());
 }
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: ChatScreen(),
     );
   }
 }

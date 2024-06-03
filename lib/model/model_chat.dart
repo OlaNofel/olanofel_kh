@@ -4,13 +4,13 @@ class ModelChat {
   String name;
   String image;
   String message;
-  num message_count;
+  num unread_message_coun;
   num date;
   ModelChat({
     required this.name,
     required this.image,
     required this.message,
-    required this.message_count,
+    required this.unread_message_coun,
     required this.date,
   });
 
@@ -18,14 +18,14 @@ class ModelChat {
     String? name,
     String? image,
     String? message,
-    num? message_count,
+    num? unread_message_coun,
     num? date,
   }) {
     return ModelChat(
       name: name ?? this.name,
       image: image ?? this.image,
       message: message ?? this.message,
-      message_count: message_count ?? this.message_count,
+      unread_message_coun: unread_message_coun ?? this.unread_message_coun,
       date: date ?? this.date,
     );
   }
@@ -36,7 +36,7 @@ class ModelChat {
     result.addAll({'name': name});
     result.addAll({'image': image});
     result.addAll({'message': message});
-    result.addAll({'message_count': message_count});
+    result.addAll({'unread_message_coun': unread_message_coun});
     result.addAll({'date': date});
 
     return result;
@@ -47,7 +47,7 @@ class ModelChat {
       name: map['name'] ?? '',
       image: map['image'] ?? '',
       message: map['message'] ?? '',
-      message_count: map['message_count'] ?? 0,
+      unread_message_coun: map['unread_message_coun'] ?? 0,
       date: map['date'] ?? 0,
     );
   }
@@ -59,7 +59,7 @@ class ModelChat {
 
   @override
   String toString() {
-    return 'ModelChat(name: $name, image: $image, message: $message, message_count: $message_count, date: $date)';
+    return 'ModelChat(name: $name, image: $image, message: $message, unread_message_coun: $unread_message_coun, date: $date)';
   }
 
   @override
@@ -70,7 +70,7 @@ class ModelChat {
         other.name == name &&
         other.image == image &&
         other.message == message &&
-        other.message_count == message_count &&
+        other.unread_message_coun == unread_message_coun &&
         other.date == date;
   }
 
@@ -79,7 +79,7 @@ class ModelChat {
     return name.hashCode ^
         image.hashCode ^
         message.hashCode ^
-        message_count.hashCode ^
+        unread_message_coun.hashCode ^
         date.hashCode;
   }
 }

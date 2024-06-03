@@ -1,29 +1,40 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:my_test_flutter_ui_2/model/model_chat.dart';
-import 'package:my_test_flutter_ui_2/service/chat_service.dart';
+import 'package:ola_nofel_test2/screens/home_screen.dart';
+import '../model/model_chat.dart';
+import '../service/chat_service.dart';
 
 class ChatScreen extends StatelessWidget {
-  // List<ChatData> result = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black87,
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(children: [
+      backgroundColor: Colors.black87,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.black,
-                    ),
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.black,
+                      ),
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   Text(
@@ -47,60 +58,102 @@ class ChatScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
-              height: 80,
-            ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [Icon(Icons.search), Text('search here....')]),
-            SizedBox(
-              height: 70,
-            ),
-            Container(
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(15)),
-              child: Column(children: [
-                FutureBuilder<List<ModelChat>>(
-                  future: ChatDataImp().getAllQuiz(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage:
-                                    AssetImage(snapshot.data![index].image),
-                              ),
-                              title: Row(
-                                children: [
-                                  Text(
-                                    snapshot.data![index].name,
-                                  ),
-                                  SizedBox(width: 20),
-                                  Expanded(
-                                    child: Text(
-                                      snapshot.data![index].message_count
-                                          .toString(),
+            SizedBox(height: 20),
+            Expanded(
+              child: FutureBuilder<List<ModelChat>>(
+                future: ChatDataImp().getAlldata(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text("No data"));
+                  } else if (snapshot.hasData) {
+                    List<ModelChat> messagesChat = snapshot.data!;
+                    return StatefulBuilder(
+                      builder: (BuildContext context, setState) {
+                        List<ModelChat> filteredMessages = messagesChat;
+
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(17.0),
+                              child: Container(
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    hintText: "Search here..",
+                                    hintStyle: TextStyle(color: Colors.grey),
+                                    prefixIcon: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Icon(
+                                        Icons.search,
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                    suffixIcon: Icon(
+                                      Icons.record_voice_over,
+                                      color: Colors.grey,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30),
                                     ),
                                   ),
-                                ],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      filteredMessages = messagesChat
+                                          .where((chat) =>
+                                              chat.message.contains(value))
+                                          .toList();
+                                    });
+                                  },
+                                ),
                               ),
-                              subtitle: Text(snapshot.data![index].message),
-                              trailing:
-                                  Text(snapshot.data![index].date.toString()),
-                            );
-                          });
-                    } else if (snapshot.hasError) {
-                      return Text("No data");
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  },
-                ),
-              ]),
+                            ),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: filteredMessages.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                          filteredMessages[index].image),
+                                    ),
+                                    title: Row(
+                                      children: [
+                                        Text(filteredMessages[index].name),
+                                        SizedBox(width: 20),
+                                        Expanded(
+                                          child: Text(
+                                            filteredMessages[index]
+                                                .unread_message_coun
+                                                .toString(),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    subtitle:
+                                        Text(filteredMessages[index].message),
+                                    trailing: Text(filteredMessages[index]
+                                        .date
+                                        .toString()),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    return Center(child: Text("No messages available"));
+                  }
+                },
+              ),
             ),
-          ]),
-        ));
+          ],
+        ),
+      ),
+    );
   }
 }

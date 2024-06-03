@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:my_test_flutter_ui_2/screens/home_screen.dart';
+
+import 'home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   TextEditingController usernameController = TextEditingController();
