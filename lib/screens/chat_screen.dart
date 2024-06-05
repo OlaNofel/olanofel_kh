@@ -78,6 +78,7 @@ class ChatScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(17.0),
                               child: Container(
+                                color: Colors.green[100],
                                 child: TextFormField(
                                   decoration: InputDecoration(
                                     filled: true,
@@ -114,29 +115,31 @@ class ChatScreen extends StatelessWidget {
                               child: ListView.builder(
                                 itemCount: filteredMessages.length,
                                 itemBuilder: (context, index) {
-                                  return ListTile(
-                                    leading: CircleAvatar(
-                                      backgroundImage: AssetImage(
-                                          filteredMessages[index].image),
-                                    ),
-                                    title: Row(
-                                      children: [
-                                        Text(filteredMessages[index].name),
-                                        SizedBox(width: 20),
-                                        Expanded(
-                                          child: Text(
-                                            filteredMessages[index]
-                                                .unread_message_coun
-                                                .toString(),
+                                  return Card(
+                                    child: ListTile(
+                                      leading: CircleAvatar(
+                                        backgroundImage: AssetImage(
+                                            filteredMessages[index].image),
+                                      ),
+                                      title: Row(
+                                        children: [
+                                          Text(filteredMessages[index].name),
+                                          SizedBox(width: 20),
+                                          Expanded(
+                                            child: Text(
+                                              filteredMessages[index]
+                                                  .unread_message_count
+                                                  .toString(),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
+                                      subtitle:
+                                          Text(filteredMessages[index].message),
+                                      trailing: Text(filteredMessages[index]
+                                          .date
+                                          .toString()),
                                     ),
-                                    subtitle:
-                                        Text(filteredMessages[index].message),
-                                    trailing: Text(filteredMessages[index]
-                                        .date
-                                        .toString()),
                                   );
                                 },
                               ),

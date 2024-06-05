@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ola_nofel_test2/screens/login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -13,14 +14,22 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.black,
-                    ),
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.black,
+                      ),
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   Text(
